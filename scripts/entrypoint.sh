@@ -1,7 +1,7 @@
 set -e
 
 if [[ "$1" != 'server' && "$1" != 'api' && "$1" != 'client' ]]; then
-  echo "Usage: $0 <server|api>" >&2
+  echo "Usage: $0 <server|api|client>" >&2
   exit 1
 fi
 
