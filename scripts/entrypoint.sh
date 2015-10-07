@@ -38,12 +38,6 @@ if [[ "$1" == 'client' ]]; then
   }
 }
 EOF
-  exec /opt/sensu/bin/sensu-client \
-    -c "$localconf_path" \
-    -d '/etc/sensu/conf.d' \
-    -e '/etc/sensu/extensions' \
-    "$@"
-
 else
   if [[ -z "$REDIS_PORT_6379_TCP_ADDR" ]]; then
     echo '$REDIS_PORT_6379_TCP_ADDR not defined. Aborting...' >&2
@@ -62,17 +56,10 @@ else
   }
 }
 EOF
-  if [[ "$1" == 'server' ]]; then
-    exec /opt/sensu/bin/sensu-server \
-      -c "$localconf_path" \
-      -d '/etc/sensu/conf.d' \
-      -e '/etc/sensu/extensions' \
-      "$@"
-  elif [[ "$1" == 'api' ]]; then
-    exec /opt/sensu/bin/sensu-api \
-      -c "$localconf_path" \
-      -d '/etc/sensu/conf.d' \
-      -e '/etc/sensu/extensions' \
-      "$@"
-  fi
 fi
+
+exec "/opt/sensu/bin/sensu-$1" \
+  -c "$localconf_path" \
+  -d '/etc/sensu/conf.d' \
+  -e '/etc/sensu/extensions' \
+  "$@"
