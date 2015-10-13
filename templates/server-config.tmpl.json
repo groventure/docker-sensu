@@ -1,0 +1,11 @@
+{
+  "rabbitmq": {
+    "host": "{{ RABBITMQ_PORT_5672_TCP_ADDR }}",
+    "vhost": "{{ RABBITMQ_ENV_RABBITMQ_DEFAULT_VHOST }}",
+    "user": "{{ RABBITMQ_ENV_RABBITMQ_DEFAULT_USER }}",
+    "password": "{{ RABBITMQ_ENV_RABBITMQ_DEFAULT_PASS }}"
+  },
+  "redis": {
+    "host": "{{ REDIS_PORT_6379_TCP_ADDR }}"
+  }
+}
