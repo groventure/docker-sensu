@@ -1,8 +1,13 @@
 {
-  "rabbitmq": {
-    "host": "{{ RABBITMQ_PORT_5672_TCP_ADDR }}",
-    "vhost": "{{ RABBITMQ_ENV_RABBITMQ_DEFAULT_VHOST }}",
-    "user": "{{ RABBITMQ_ENV_RABBITMQ_DEFAULT_USER }}",
-    "password": "{{ RABBITMQ_ENV_RABBITMQ_DEFAULT_PASS }}"
+  "client": {
+    "name": "{{ NAME }}",
+    "address": "{{ ipaddr }}",
+    "socket": {
+      "bind": "0.0.0.0",
+      "port": 3030
+    },
+    "subscriptions": [
+      "basic"
+    ]
   }
 }

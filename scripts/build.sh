@@ -14,6 +14,12 @@ apt-get update
 apt-get install -y --no-install-recommends \
   sensu
 
+curl -L 'http://sensuapp.org/docs/0.20/files/check-memory.sh' \
+  -o '/etc/sensu/plugins/check-memory.sh'
+
+chown -R sensu:sensu /etc/sensu/plugins/
+chmod 0700 /etc/sensu/plugins/*.sh
+
 apt-get purge -y \
   ca-certificates \
   curl
