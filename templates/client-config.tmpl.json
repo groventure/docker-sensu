@@ -7,7 +7,10 @@
       "port": 3030
     },
     "subscriptions": [
-      "basic"
+      "basic-checks",
+      "basic-metrics",
+      "basic-remote-checks",
+      "basic-remote-metrics"
     ]
   }
 }

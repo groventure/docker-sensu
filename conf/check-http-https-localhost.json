@@ -1,0 +1,11 @@
+{
+  "checks": {
+    "check-http-https-localhost": {
+      "command": "ruby /opt/sensu/embedded/bin/check-ports.rb -p 80,443 -H localhost",
+      "interval": 30,
+      "subscribers": [
+        "basic-remote-checks"
+      ]
+    }
+  }
+}

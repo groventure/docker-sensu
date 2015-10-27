@@ -1,6 +1,8 @@
 set -e
 
-if [[ "$1" != 'server' && "$1" != 'api' && "$1" != 'client' ]]; then
+cmd="$1"
+
+if [[ "$cmd" != 'server' && "$cmd" != 'api' && "$cmd" != 'client' ]]; then
   echo "Usage: $0 <server|api|client>" >&2
   exit 1
 fi
@@ -11,23 +13,39 @@ function escape_sed {
 
 function sed_rabbitmq_config {
   if [[ -z "$RABBITMQ_PORT_5672_TCP_ADDR" ]]; then
-    echo '$RABBITMQ_PORT_5672_TCP_ADDR not defined. Aborting...' >&2
-    exit 1
+    if [[ "$cmd" == 'client' && -n "$RABBITMQ_HOST" ]]; then
+      RABBITMQ_PORT_5672_TCP_ADDR="$RABBITMQ_HOST"
+    else
+      echo '$RABBITMQ_PORT_5672_TCP_ADDR not defined. Aborting...' >&2
+      exit 1
+    fi
   fi
 
   if [[ -z "$RABBITMQ_ENV_RABBITMQ_DEFAULT_VHOST" ]]; then
-    echo '$RABBITMQ_ENV_RABBITMQ_DEFAULT_VHOST not defined. Aborting...' >&2
-    exit 1
+    if [[ "$cmd" == 'client' && -n "$RABBITMQ_VHOST" ]]; then
+      RABBITMQ_ENV_RABBITMQ_DEFAULT_VHOST="$RABBITMQ_VHOST"
+    else
+      echo '$RABBITMQ_ENV_RABBITMQ_DEFAULT_VHOST not defined. Aborting...' >&2
+      exit 1
+    fi
   fi
 
   if [[ -z "$RABBITMQ_ENV_RABBITMQ_DEFAULT_USER" ]]; then
-    echo '$RABBITMQ_ENV_RABBITMQ_DEFAULT_USER not defined. Aborting...' >&2
-    exit 1
+    if [[ "$cmd" == 'client' && -n "$RABBITMQ_USER" ]]; then
+      RABBITMQ_ENV_RABBITMQ_DEFAULT_USER="$RABBITMQ_USER"
+    else
+      echo '$RABBITMQ_ENV_RABBITMQ_DEFAULT_USER not defined. Aborting...' >&2
+      exit 1
+    fi
   fi
 
   if [[ -z "$RABBITMQ_ENV_RABBITMQ_DEFAULT_PASS" ]]; then
-    echo '$RABBITMQ_ENV_RABBITMQ_DEFAULT_PASS not defined. Aborting...' >&2
-    exit 1
+    if [[ "$cmd" == 'client' && -n "$RABBITMQ_PASSWORD" ]]; then
+      RABBITMQ_ENV_RABBITMQ_DEFAULT_PASS="$RABBITMQ_PASSWORD"
+    else
+      echo '$RABBITMQ_ENV_RABBITMQ_DEFAULT_PASS not defined. Aborting...' >&2
+      exit 1
+    fi
   fi
 
   sed -i.tmp 's/{{\s*RABBITMQ_PORT_5672_TCP_ADDR\s*}}/'"$(escape_sed "$RABBITMQ_PORT_5672_TCP_ADDR")"'/g' \
@@ -86,7 +104,7 @@ in '/docker-templates'. Therefore to edit options in those configration files,
 it is important to edit the template file itself.
 EOF
 
-case "$1" in
+case "$cmd" in
   api)
     template='/docker-templates/api-config.tmpl.json'
     config='/etc/sensu/config.json'
@@ -119,7 +137,8 @@ case "$1" in
     ;;
 esac
 
-exec "/opt/sensu/bin/sensu-$1" \
+PATH="${PATH}:/opt/sensu/bin:/opt/sensu/embedded/bin" exec \
+  "/opt/sensu/bin/sensu-$cmd" \
   -c "$config" \
   -d '/etc/sensu/conf.d' \
   -e '/etc/sensu/extensions' \
