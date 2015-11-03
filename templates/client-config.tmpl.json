@@ -1,7 +1,7 @@
 {
   "client": {
     "name": "{{ NAME }}",
-    "address": "{{ ipaddr }}",
+    "address": "{{ IP_ADDR }}",
     "socket": {
       "bind": "0.0.0.0",
       "port": 3030

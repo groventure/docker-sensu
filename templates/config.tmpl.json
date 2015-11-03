@@ -7,5 +7,11 @@
   },
   "redis": {
     "host": "{{ REDIS_PORT_6379_TCP_ADDR }}"
+  },
+  "api": {
+    "host": "{{ API_HOST }}",
+    "port": 4567,
+    "user": "{{ API_USER }}",
+    "password": "{{ API_PASSWORD }}"
   }
 }

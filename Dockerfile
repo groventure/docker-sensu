@@ -18,7 +18,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
       sensu-plugins-cpu-checks \
       sensu-plugins-disk-checks \
       sensu-plugins-memory-checks \
-      sensu-plugins-network-checks && \
+      sensu-plugins-network-checks \
+      sensu-plugins-mailer && \
     apt-get purge -y \
       build-essential \
       ca-certificates \
