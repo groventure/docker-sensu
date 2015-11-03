@@ -178,5 +178,4 @@ PATH="${PATH}:/opt/sensu/bin:/opt/sensu/embedded/bin" exec \
   "/opt/sensu/bin/sensu-$cmd" \
   -c "$config" \
   -d '/etc/sensu/conf.d' \
-  -e '/etc/sensu/extensions' \
-  "$@"
+  -e '/etc/sensu/extensions'
