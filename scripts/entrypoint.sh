@@ -157,6 +157,12 @@ case "$cmd" in
     sed_api_config "$config"
     ;;
   client)
+    if [[ "$2" == '--standalone' ]]; then
+      install -Zvm 600 "$template" "$config"
+      sed_rabbitmq_config "$config"
+      sed_redis_config "$config"
+      sed_api_config "$config"
+    fi
     client_template='/docker-templates/client-config.tmpl.json'
     client_config='/etc/sensu/conf.d/client.json'
 
